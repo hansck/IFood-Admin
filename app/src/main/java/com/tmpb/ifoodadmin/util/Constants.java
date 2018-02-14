@@ -32,6 +32,10 @@ public class Constants {
 		public static String KEY = "canteenKey";
 	}
 
+	public static class Menu {
+		public static String MENU = "menu";
+	}
+
 	public static class Storage {
 		public static String IMAGES = "images";
 	}

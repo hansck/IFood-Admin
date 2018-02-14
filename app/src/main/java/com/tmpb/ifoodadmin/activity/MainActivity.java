@@ -26,6 +26,9 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.fragment.CanteenFragment_;
+import com.tmpb.ifoodadmin.fragment.ManageCanteenFragment_;
+import com.tmpb.ifoodadmin.fragment.ManageMenuFragment_;
+import com.tmpb.ifoodadmin.fragment.MenuFragment_;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.ImageUtil;
 import com.tmpb.ifoodadmin.util.UserManager;
@@ -124,9 +127,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.nav_home).setVisible(false);
+		menu.findItem(R.id.nav_menu).setVisible(false);
 		menu.findItem(R.id.nav_history_order).setVisible(false);
-		menu.findItem(R.id.nav_signin).setVisible(false);
+		menu.findItem(R.id.nav_manage_menu).setVisible(false);
+		menu.findItem(R.id.nav_canteen).setVisible(false);
+		menu.findItem(R.id.nav_manage_canteen).setVisible(false);
 		menu.findItem(R.id.nav_signout).setVisible(false);
 		return true;
 	}
@@ -148,11 +153,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.nav_home:
+			case R.id.nav_menu:
 				goToCanteen();
 				break;
 			case R.id.nav_history_order:
-//				goToHistoryOrder();
+				break;
+			case R.id.nav_manage_menu:
+				break;
+			case R.id.nav_canteen:
+				break;
+			case R.id.nav_manage_canteen:
 				break;
 			case R.id.nav_signout:
 				onSignOut();
@@ -165,8 +175,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	}
 
 	//region Private Methods
+	private void goToMenu() {
+		MenuFragment_ fragment = new MenuFragment_();
+		navigateTo(fragment);
+	}
+
+	private void goToManageMenu() {
+		ManageMenuFragment_ fragment = new ManageMenuFragment_();
+		navigateTo(fragment);
+	}
+
 	private void goToCanteen() {
 		CanteenFragment_ fragment = new CanteenFragment_();
+		navigateTo(fragment);
+	}
+
+	private void goToManageCanteen() {
+		ManageCanteenFragment_ fragment = new ManageCanteenFragment_();
 		navigateTo(fragment);
 	}
 

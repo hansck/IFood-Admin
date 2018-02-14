@@ -1,18 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<group
-		android:id="@+id/menu_main"
+		android:id="@+id/menu_seller"
 		android:checkableBehavior="single"
 		android:visible="true">
 		<item
-			android:id="@+id/nav_home"
+			android:id="@+id/nav_history_order"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="0"
 			android:title="@string/home"/>
 		<item
-			android:id="@+id/nav_history_order"
+			android:id="@+id/nav_menu"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="1"
+			android:title="@string/history_order"/>
+		<item
+			android:id="@+id/nav_manage_menu"
+			android:icon="@drawable/ic_home"
+			android:orderInCategory="2"
+			android:title="@string/history_order"/>
+	</group>
+	<group
+		android:id="@+id/menu_admin"
+		android:checkableBehavior="single"
+		android:visible="true">
+		<item
+			android:id="@+id/nav_canteen"
+			android:icon="@drawable/ic_home"
+			android:orderInCategory="3"
+			android:title="@string/home"/>
+		<item
+			android:id="@+id/nav_manage_canteen"
+			android:icon="@drawable/ic_home"
+			android:orderInCategory="4"
 			android:title="@string/history_order"/>
 	</group>
 	<group
@@ -20,14 +40,9 @@
 		android:checkableBehavior="single"
 		android:visible="true">
 		<item
-			android:id="@+id/nav_signin"
-			android:icon="@drawable/ic_sign_out"
-			android:orderInCategory="9"
-			android:title="@string/sign_in"/>
-		<item
 			android:id="@+id/nav_signout"
 			android:icon="@drawable/ic_sign_out"
-			android:orderInCategory="9"
+			android:orderInCategory="5"
 			android:title="@string/sign_out"/>
 	</group>
 </menu>

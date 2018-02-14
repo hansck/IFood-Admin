@@ -14,6 +14,11 @@ public class Menu implements Parcelable {
 	private int price;
 	private String picture;
 
+	public Menu(String name, int price) {
+		this.name = name;
+		this.price = price;
+	}
+
 	public Menu(String key, String name, int price, String picture) {
 		this.key = key;
 		this.name = name;
