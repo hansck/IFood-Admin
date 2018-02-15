@@ -64,7 +64,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 
 	@AfterViews
 	void initLayout() {
-		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.manage_canteen));
+		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.manage_menu));
 		storageRef = FirebaseStorage.getInstance().getReference();
 		Bundle data = this.getArguments();
 		if (data != null) {
@@ -153,8 +153,8 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		return false;
 	}
 
-	private Menu prepareNews(Uri downloadUrl) {
-		Menu menu = new Menu(name, price);
+	private Menu prepareMenu(Uri downloadUrl) {
+		Menu menu = new Menu(name, price, "-L5MREP_8AqtiWxknKZM");
 		if (downloadUrl != null) {
 			menu.setPicture(downloadUrl.toString());
 		}
@@ -187,8 +187,8 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 	}
 
 	private void uploadContent(Uri downloadUrl) {
-		String newsId = FirebaseDB.getInstance().getKey(Constants.Menu.MENU);
-		FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU).child(newsId).setValue(prepareNews(downloadUrl));
+		String menuKey = FirebaseDB.getInstance().getKey(Constants.Menu.MENU);
+		FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU).child(menuKey).setValue(prepareMenu(downloadUrl));
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_add));
 		navigateFragmentWithoutBackstack(R.id.contentFrame, new MenuFragment_());

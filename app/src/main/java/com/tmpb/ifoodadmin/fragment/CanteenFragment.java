@@ -13,7 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
-import com.tmpb.ifoodadmin.activity.LoginActivity;
 import com.tmpb.ifoodadmin.activity.LoginActivity_;
 import com.tmpb.ifoodadmin.activity.MainActivity_;
 import com.tmpb.ifoodadmin.adapter.CanteenAdapter;
@@ -41,7 +40,6 @@ public class CanteenFragment extends BaseFragment {
 
 	private List<Canteen> canteens = new ArrayList<>();
 	private CanteenAdapter adapter;
-	private boolean isFirstEnter = true;
 
 	@ViewById
 	RecyclerView listCanteen;
@@ -62,11 +60,10 @@ public class CanteenFragment extends BaseFragment {
 		adapter = new CanteenAdapter(getActivity(), canteens, canteenListener);
 		listCanteen.setAdapter(adapter);
 
-		if (ConnectivityUtil.getInstance().isNetworkConnected() && isFirstEnter) {
+		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
 			swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 			swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 			onRefreshListener.onRefresh();
-			isFirstEnter = false;
 		}
 	}
 
@@ -85,7 +82,6 @@ public class CanteenFragment extends BaseFragment {
 		super.onResume();
 		swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 		swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-		((MainActivity_) getActivity()).setHomeChecked();
 	}
 
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)

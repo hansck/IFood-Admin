@@ -16,6 +16,10 @@ public class Order {
 	private Date date;
 	private int status;
 
+	public Order() {
+
+	}
+
 	public Order(String key, String canteenKey, String userKey, String menuKey, String quantity, Date date, int status) {
 		this.key = key;
 		this.canteenKey = canteenKey;

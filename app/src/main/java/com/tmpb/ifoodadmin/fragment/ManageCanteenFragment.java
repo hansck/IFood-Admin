@@ -21,7 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.tmpb.ifoodadmin.R;
-import com.tmpb.ifoodadmin.model.Menu;
+import com.tmpb.ifoodadmin.model.Canteen;
 import com.tmpb.ifoodadmin.util.Common;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.FirebaseDB;
@@ -42,9 +42,8 @@ import static android.view.View.VISIBLE;
 @EFragment(R.layout.fragment_manage_canteen)
 public class ManageCanteenFragment extends ImageCaptureFragment {
 
-	private Menu menu;
-	private String name;
-	private int price;
+	private Canteen canteen;
+	private String name, location, schedule, account;
 	private StorageReference storageRef;
 	private File resizedFile;
 	private static final int REQUEST_PERMISSIONS = 1;
@@ -52,7 +51,11 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 	@ViewById
 	EditText editName;
 	@ViewById
-	EditText editPrice;
+	EditText editLocation;
+	@ViewById
+	EditText editSchedule;
+	@ViewById
+	EditText editAccount;
 	@ViewById
 	TextView imageLabel;
 	@ViewById
@@ -68,15 +71,17 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 		storageRef = FirebaseStorage.getInstance().getReference();
 		Bundle data = this.getArguments();
 		if (data != null) {
-			menu = data.getParcelable(Constants.Menu.MENU);
+			canteen = data.getParcelable(Constants.Canteen.CANTEEN);
 		}
-		if (menu != null) {
-			editName.setText(menu.getName());
-			editPrice.setText(menu.getPrice());
-			if (menu.getPicture() != null) {
-				int start = menu.getPicture().indexOf("F") + 1;
-				int end = menu.getPicture().indexOf("?");
-				imageLabel.setText(menu.getPicture().substring(start, end));
+		if (canteen != null) {
+			editName.setText(canteen.getName());
+			editLocation.setText(canteen.getLocation());
+			editSchedule.setText(canteen.getSchedule());
+			editAccount.setText(canteen.getAccount());
+			if (canteen.getPicture() != null) {
+				int start = canteen.getPicture().indexOf("F") + 1;
+				int end = canteen.getPicture().indexOf("?");
+				imageLabel.setText(canteen.getPicture().substring(start, end));
 			}
 			btnAdd.setVisibility(GONE);
 			btnUpdate.setVisibility(VISIBLE);
@@ -138,27 +143,29 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 
 	@Override
 	public void onImageCaptured() {
-		resizedFile = createResizedFile(getString(R.string.menu));
+		resizedFile = createResizedFile(getString(R.string.canteen));
 		imageLabel.setText(resizedFile.getName());
 	}
 
 	//region Private methods
 
 	private boolean getData() {
-		if (!editName.getText().toString().isEmpty() && !editPrice.getText().toString().isEmpty()) {
+		if (!editName.getText().toString().isEmpty() && !editLocation.getText().toString().isEmpty() && !editSchedule.getText().toString().isEmpty()) {
 			name = editName.getText().toString();
-			price = Integer.parseInt(editPrice.getText().toString());
+			location = editLocation.getText().toString();
+			schedule = editSchedule.getText().toString();
+			account = editAccount.getText().toString();
 			return true;
 		}
 		return false;
 	}
 
-	private Menu prepareNews(Uri downloadUrl) {
-		Menu menu = new Menu(name, price);
+	private Canteen prepareCanteen(Uri downloadUrl) {
+		Canteen canteen = new Canteen(name, location, schedule, account);
 		if (downloadUrl != null) {
-			menu.setPicture(downloadUrl.toString());
+			canteen.setPicture(downloadUrl.toString());
 		}
-		return menu;
+		return canteen;
 	}
 	//endregion
 
@@ -187,20 +194,22 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 	}
 
 	private void uploadContent(Uri downloadUrl) {
-		String newsId = FirebaseDB.getInstance().getKey(Constants.Menu.MENU);
-		FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU).child(newsId).setValue(prepareNews(downloadUrl));
+		String canteenKey = FirebaseDB.getInstance().getKey(Constants.Canteen.CANTEEN);
+		FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN).child(canteenKey).setValue(prepareCanteen(downloadUrl));
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_add));
 		navigateFragmentWithoutBackstack(R.id.contentFrame, new MenuFragment_());
 	}
 
 	private void updateContent(Uri downloadUrl) {
-		DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU);
+		DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
 		Map<String, Object> taskMap = new HashMap<>();
 		taskMap.put("name", name);
-		taskMap.put("price", price);
+		taskMap.put("location", location);
+		taskMap.put("schedule", schedule);
+		taskMap.put("account", account);
 		if (downloadUrl != null) taskMap.put("picture", downloadUrl.toString());
-		ref.child(menu.getKey()).updateChildren(taskMap);
+		ref.child(canteen.getKey()).updateChildren(taskMap);
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_update));
 		getActivity().getSupportFragmentManager().popBackStack();

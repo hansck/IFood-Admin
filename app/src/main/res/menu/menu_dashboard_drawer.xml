@@ -8,17 +8,17 @@
 			android:id="@+id/nav_history_order"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="0"
-			android:title="@string/home"/>
+			android:title="@string/history_order"/>
 		<item
 			android:id="@+id/nav_menu"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="1"
-			android:title="@string/history_order"/>
+			android:title="@string/menu"/>
 		<item
 			android:id="@+id/nav_manage_menu"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="2"
-			android:title="@string/history_order"/>
+			android:title="@string/manage_menu"/>
 	</group>
 	<group
 		android:id="@+id/menu_admin"
@@ -28,12 +28,12 @@
 			android:id="@+id/nav_canteen"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="3"
-			android:title="@string/home"/>
+			android:title="@string/canteen"/>
 		<item
 			android:id="@+id/nav_manage_canteen"
 			android:icon="@drawable/ic_home"
 			android:orderInCategory="4"
-			android:title="@string/history_order"/>
+			android:title="@string/manage_canteen"/>
 	</group>
 	<group
 		android:id="@+id/menu_signout"

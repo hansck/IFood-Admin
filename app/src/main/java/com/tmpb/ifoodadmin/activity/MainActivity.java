@@ -29,6 +29,7 @@ import com.tmpb.ifoodadmin.fragment.CanteenFragment_;
 import com.tmpb.ifoodadmin.fragment.ManageCanteenFragment_;
 import com.tmpb.ifoodadmin.fragment.ManageMenuFragment_;
 import com.tmpb.ifoodadmin.fragment.MenuFragment_;
+import com.tmpb.ifoodadmin.util.ConnectivityUtil;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.ImageUtil;
 import com.tmpb.ifoodadmin.util.UserManager;
@@ -59,10 +60,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	@AfterViews
 	void initLayout() {
 		setSupportActionBar(toolbar);
+
+		// Initialize Config
 		UserManager.getInstance().initAuth(this);
+		ConnectivityUtil.getInstance().setConnectivityManager(getApplicationContext());
 		SharedPreferences preference = getSharedPreferences(Constants.General.PREFERENCE, Context.MODE_PRIVATE);
 		UserManager.getInstance().setKeyStore(preference);
 		UserManager.getInstance().initAuth(this);
+
 		toggle = new ActionBarDrawerToggle(this, content, toolbar, R.string.drawer_open, R.string.drawer_close) {
 			public void onDrawerClosed(View v) {
 			}
@@ -153,16 +158,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 	@Override
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.nav_menu:
-				goToCanteen();
-				break;
 			case R.id.nav_history_order:
 				break;
+			case R.id.nav_menu:
+				goToMenu();
+				break;
 			case R.id.nav_manage_menu:
+				goToManageMenu();
 				break;
 			case R.id.nav_canteen:
+				goToCanteen();
 				break;
 			case R.id.nav_manage_canteen:
+				goToManageCanteen();
 				break;
 			case R.id.nav_signout:
 				onSignOut();
@@ -180,6 +188,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		navigateTo(fragment);
 	}
 
+//		private void goToHistoryOrder() {
+//		Intent intent = new Intent(this, VerificationActivity_.class);
+//		startActivity(intent);
+//		finish();
+//	}
+
 	private void goToManageMenu() {
 		ManageMenuFragment_ fragment = new ManageMenuFragment_();
 		navigateTo(fragment);
@@ -194,12 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 		ManageCanteenFragment_ fragment = new ManageCanteenFragment_();
 		navigateTo(fragment);
 	}
-
-//	private void goToHistoryOrder() {
-//		Intent intent = new Intent(this, VerificationActivity_.class);
-//		startActivity(intent);
-//		finish();
-//	}
 
 	private void goToLogin() {
 		Intent intent = new Intent(MainActivity.this, LoginActivity_.class);
