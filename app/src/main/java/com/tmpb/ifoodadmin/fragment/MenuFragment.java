@@ -2,7 +2,6 @@ package com.tmpb.ifoodadmin.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.activity.LoginActivity_;
-import com.tmpb.ifoodadmin.activity.MainActivity_;
 import com.tmpb.ifoodadmin.adapter.MenuAdapter;
 import com.tmpb.ifoodadmin.model.Menu;
 import com.tmpb.ifoodadmin.util.Common;

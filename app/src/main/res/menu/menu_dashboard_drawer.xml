@@ -3,7 +3,7 @@
 	<group
 		android:id="@+id/menu_seller"
 		android:checkableBehavior="single"
-		android:visible="true">
+		android:visible="false">
 		<item
 			android:id="@+id/nav_history_order"
 			android:icon="@drawable/ic_home"
@@ -23,7 +23,7 @@
 	<group
 		android:id="@+id/menu_admin"
 		android:checkableBehavior="single"
-		android:visible="true">
+		android:visible="false">
 		<item
 			android:id="@+id/nav_canteen"
 			android:icon="@drawable/ic_home"

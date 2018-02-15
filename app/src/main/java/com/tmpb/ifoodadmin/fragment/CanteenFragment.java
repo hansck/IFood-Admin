@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.activity.LoginActivity_;
-import com.tmpb.ifoodadmin.activity.MainActivity_;
 import com.tmpb.ifoodadmin.adapter.CanteenAdapter;
 import com.tmpb.ifoodadmin.model.Canteen;
 import com.tmpb.ifoodadmin.util.Common;

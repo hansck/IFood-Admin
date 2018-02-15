@@ -15,6 +15,7 @@
 	<string name="dialog_remove">Are you sure you want to remove this item?</string>
 	<string name="drawer_close">Close navigation drawer</string>
 	<string name="drawer_open">Open navigation drawer</string>
+	<string name="email">Email Address</string>
 	<string name="estimated_price">Estimated Price</string>
 	<string name="field_empty">All field must not be empty</string>
 	<string name="home">Home</string>
@@ -29,6 +30,7 @@
 	<string name="on_progress">On Progress</string>
 	<string name="order">Order</string>
 	<string name="order_items">Order Items</string>
+	<string name="password">Password</string>
 	<string name="payment_details">Payment Details</string>
 	<string name="permission_required">Permission(s) are required to continue the action</string>
 	<string name="phone_number">Phone Number</string>
@@ -38,8 +40,9 @@
 	<string name="remove">Remove</string>
 	<string name="schedule">Schedule</string>
 	<string name="sign_in">Sign In</string>
-	<string name="sign_out">Sign Out</string>
+	<string name="sign_in_failed">Wrong email or password</string>
 	<string name="sign_in_google">Sign In with Google</string>
+	<string name="sign_out">Sign Out</string>
 	<string name="select_source">Select Source</string>
 	<string name="success_add">Item has been added successfully</string>
 	<string name="success_update">Item has been updated successfully</string>

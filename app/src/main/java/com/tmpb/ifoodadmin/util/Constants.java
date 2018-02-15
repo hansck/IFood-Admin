@@ -29,6 +29,10 @@ public class Constants {
 
 	public static class Canteen {
 		public static String CANTEEN = "canteen";
+		public static String NAME = "name";
+		public static String LOCATION = "location";
+		public static String SCHEDULE = "schedule";
+		public static String ACCOUNT = "account";
 		public static String KEY = "canteenKey";
 	}
 
