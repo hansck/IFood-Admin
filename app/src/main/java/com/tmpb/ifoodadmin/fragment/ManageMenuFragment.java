@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -25,6 +26,7 @@ import com.tmpb.ifoodadmin.model.Menu;
 import com.tmpb.ifoodadmin.util.Common;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.FirebaseDB;
+import com.tmpb.ifoodadmin.util.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -154,7 +156,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 	}
 
 	private Menu prepareMenu(Uri downloadUrl) {
-		Menu menu = new Menu(name, price, "-L5MREP_8AqtiWxknKZM");
+		Menu menu = new Menu(name, price, UserManager.getInstance().getCanteenKey());
 		if (downloadUrl != null) {
 			menu.setPicture(downloadUrl.toString());
 		}

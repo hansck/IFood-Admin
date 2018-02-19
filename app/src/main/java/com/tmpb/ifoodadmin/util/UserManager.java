@@ -74,12 +74,33 @@ public class UserManager {
 		editor.putString(Constants.Canteen.NAME, canteen.getName());
 		editor.putString(Constants.Canteen.LOCATION, canteen.getLocation());
 		editor.putString(Constants.Canteen.SCHEDULE, canteen.getSchedule());
-		editor.putString(Constants.User.PHONE, canteen.getAccount());
+		editor.putString(Constants.Canteen.ACCOUNT, canteen.getAccount());
+		editor.putString(Constants.Canteen.PICTURE, canteen.getPicture());
 		editor.apply();
 	}
 
 	public String getCanteenKey() {
 		return keyStore.getString(Constants.Canteen.KEY, "");
+	}
+
+	public String getCanteenName() {
+		return keyStore.getString(Constants.Canteen.NAME, "");
+	}
+
+	public String getCanteenLocation() {
+		return keyStore.getString(Constants.Canteen.LOCATION, "");
+	}
+
+	public String getCanteenSchedule() {
+		return keyStore.getString(Constants.Canteen.SCHEDULE, "");
+	}
+
+	public String getCanteenAccount() {
+		return keyStore.getString(Constants.Canteen.ACCOUNT, "");
+	}
+
+	public String getCanteenPicture() {
+		return keyStore.getString(Constants.Canteen.PICTURE, "");
 	}
 
 	public void clearKeyStore() {

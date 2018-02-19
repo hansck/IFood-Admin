@@ -8,52 +8,6 @@
 	android:background="@color/bg_light"
 	tools:context=".fragment.MenuFragment">
 
-	<RelativeLayout
-		android:id="@+id/buttonContainer"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:background="@color/colorPrimaryLight"
-		android:orientation="horizontal"
-		android:padding="@dimen/item_margin_normal">
-
-		<ImageView
-			android:layout_width="@dimen/icon_list_medium"
-			android:layout_height="@dimen/icon_list_medium"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentRight="true"
-			android:src="@drawable/ic_arrow_right"/>
-
-		<ImageView
-			android:id="@+id/iconCart"
-			android:layout_width="@dimen/icon_list_small"
-			android:layout_height="@dimen/icon_list_small"
-			android:layout_alignParentLeft="true"
-			android:layout_alignParentStart="true"
-			android:layout_centerVertical="true"
-			android:src="@drawable/ic_shopping_cart"/>
-
-		<LinearLayout
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginLeft="@dimen/item_margin_large"
-			android:layout_marginStart="@dimen/item_margin_large"
-			android:layout_toEndOf="@+id/iconCart"
-			android:layout_toRightOf="@id/iconCart"
-			android:orientation="vertical">
-
-			<TextView
-				style="@style/BodyRegular"
-				android:text="@string/estimated_price"/>
-
-			<TextView
-				android:id="@+id/price"
-				style="@style/SubheadingMedium"
-				android:text="@string/estimated_price"
-				tools:text="Rp. 50.000,00"/>
-		</LinearLayout>
-	</RelativeLayout>
-
 	<android.support.design.widget.CoordinatorLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -102,14 +56,14 @@
 						android:padding="@dimen/item_margin_normal">
 
 						<TextView
-							android:id="@+id/title"
+							android:id="@+id/name"
 							style="@style/TitleMedium"
 							tools:text="Kantin Borju"/>
 
 						<LinearLayout
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
-							android:layout_below="@id/title"
+							android:layout_below="@id/name"
 							android:weightSum="1">
 
 							<TextView
@@ -122,6 +76,7 @@
 								tools:text="Gedung Labtek V, Lt. 1"/>
 
 							<TextView
+								android:id="@+id/schedule"
 								style="@style/BodyRegular"
 								android:layout_width="0dp"
 								android:layout_weight="0.4"

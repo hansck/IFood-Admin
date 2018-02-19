@@ -55,14 +55,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 			}
 
 			public void onDrawerOpened(View v) {
-
 			}
 		};
 		content.addDrawerListener(toggle);
 		toggle.syncState();
 		navigationView.setNavigationItemSelectedListener(this);
 		navigationView.setItemIconTintList(null);
-		if (UserManager.getInstance().getCanteenKey() != null) {
+		if (!UserManager.getInstance().getCanteenKey().isEmpty()) {
 			navigationView.getMenu().setGroupVisible(R.id.menu_seller, true);
 		} else {
 			navigationView.getMenu().setGroupVisible(R.id.menu_admin, true);

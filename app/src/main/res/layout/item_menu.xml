@@ -32,52 +32,13 @@
 				style="@style/SubheadingMedium"
 				tools:text="Nasi Goreng Kambing"/>
 
-			<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
-
-				<LinearLayout
-					android:id="@+id/countContainer"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_alignParentEnd="true"
-					android:layout_alignParentRight="true"
-					android:gravity="end"
-					android:orientation="horizontal">
-
-					<ImageButton
-						android:id="@+id/btnMinus"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="@color/bg_light"
-						android:src="@drawable/ic_minus"/>
-
-					<TextView
-						android:id="@+id/count"
-						style="@style/SubheadingRegular"
-						android:layout_width="@dimen/icon_list_small"
-						android:layout_height="@dimen/icon_list_small"
-						android:gravity="center"
-						android:text="0"/>
-
-					<ImageButton
-						android:id="@+id/btnPlus"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:background="@color/bg_light"
-						android:src="@drawable/ic_plus"/>
-				</LinearLayout>
-
-				<TextView
-					android:id="@+id/price"
-					style="@style/BodyRegular"
-					android:layout_marginTop="@dimen/item_margin_small"
-					android:layout_toLeftOf="@id/countContainer"
-					android:layout_toStartOf="@id/countContainer"
-					android:ellipsize="end"
-					android:maxLines="2"
-					tools:text="Rp. 20.000,00"/>
-			</RelativeLayout>
+			<TextView
+				android:id="@+id/price"
+				style="@style/BodyRegular"
+				android:layout_marginTop="@dimen/item_margin_small"
+				android:ellipsize="end"
+				android:maxLines="2"
+				tools:text="Rp. 20.000,00"/>
 		</LinearLayout>
 	</RelativeLayout>
 </LinearLayout>

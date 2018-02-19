@@ -2,10 +2,16 @@ package com.tmpb.ifoodadmin.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -19,8 +25,10 @@ import com.tmpb.ifoodadmin.util.Common;
 import com.tmpb.ifoodadmin.util.ConnectivityUtil;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.FirebaseDB;
+import com.tmpb.ifoodadmin.util.ImageUtil;
 import com.tmpb.ifoodadmin.util.ItemDecoration;
 import com.tmpb.ifoodadmin.util.OnListItemSelected;
+import com.tmpb.ifoodadmin.util.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -41,15 +49,38 @@ public class MenuFragment extends BaseFragment {
 
 	@ViewById
 	RecyclerView listMenu;
-//	@ViewById
-//	SwipeRefreshLayout swipeRefreshLayout;
-//	@ViewById
-//	RelativeLayout noItemLayout;
+	@ViewById
+	ImageView picture;
+	@ViewById
+	TextView name;
+	@ViewById
+	TextView location;
+	@ViewById
+	TextView schedule;
+	@ViewById
+	Toolbar toolbar;
+	@ViewById
+	AppBarLayout appBarLayout;
+	@ViewById
+	CollapsingToolbarLayout collapsingToolbar;
 
 	@AfterViews
 	void initLayout() {
-		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.home));
-		((AppCompatActivity) getActivity()).getSupportActionBar().show();
+		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+		appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+			@Override
+			public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+				if (verticalOffset <= toolbar.getHeight() - collapsingToolbar.getHeight()) {
+					collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+					collapsingToolbar.setTitle(UserManager.getInstance().getCanteenName());
+				} else {
+					collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
+					collapsingToolbar.setTitle("");
+				}
+			}
+		});
+
+		setView();
 		RecyclerView.LayoutManager newsLayoutManager = new LinearLayoutManager(getActivity());
 		listMenu.setLayoutManager(newsLayoutManager);
 		listMenu.addItemDecoration(new ItemDecoration(1, Common.getInstance().dpToPx(getActivity(), 10), true));
@@ -59,9 +90,6 @@ public class MenuFragment extends BaseFragment {
 		listMenu.setAdapter(adapter);
 
 		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
-//			swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
-//			swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-//			onRefreshListener.onRefresh();
 			loadMenu();
 		}
 	}
@@ -69,28 +97,25 @@ public class MenuFragment extends BaseFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-//		if (swipeRefreshLayout != null) {
-//			swipeRefreshLayout.setRefreshing(false);
-//			swipeRefreshLayout.destroyDrawingCache();
-//			swipeRefreshLayout.clearAnimation();
-//		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-//		swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
-//		swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 	}
 
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
 	void cancelRefresh() {
-//		if (swipeRefreshLayout.isRefreshing()) {
-//			swipeRefreshLayout.setRefreshing(false);
-//		}
 	}
 
-	private void setCanteenList() {
+	private void setView() {
+		name.setText(UserManager.getInstance().getCanteenName());
+		location.setText(UserManager.getInstance().getCanteenLocation());
+		schedule.setText(UserManager.getInstance().getCanteenSchedule());
+		ImageUtil.getInstance().setImageResource(getActivity(), UserManager.getInstance().getCanteenPicture(), picture);
+	}
+
+	private void setMenuList() {
 		if (listMenu != null) {
 			if (menus != null && menus.size() > 0) {
 				adapter.notifyDataSetChanged();
@@ -105,8 +130,9 @@ public class MenuFragment extends BaseFragment {
 	//region Firebase Call
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
 	void loadMenu() {
+		String canteenKey = UserManager.getInstance().getCanteenKey();
 		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU);
-		ref.addValueEventListener(new ValueEventListener() {
+		ref.orderByChild(Constants.Menu.CANTEEN_KEY).equalTo(canteenKey).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -114,7 +140,7 @@ public class MenuFragment extends BaseFragment {
 					menu.setKey(postSnapshot.getKey());
 					menus.add(menu);
 				}
-				setCanteenList();
+				setMenuList();
 				ref.removeEventListener(this);
 			}
 
@@ -129,14 +155,6 @@ public class MenuFragment extends BaseFragment {
 	//endregion
 
 	//region Listeners
-//	SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-//		@Override
-//		public void onRefresh() {
-//			swipeRefreshLayout.setRefreshing(true);
-//			loadMenu();
-//		}
-//	};
-
 	OnListItemSelected menuListener = new OnListItemSelected() {
 		@Override
 		public void onClick(int position) {

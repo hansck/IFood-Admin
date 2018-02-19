@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -43,9 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 	@ViewById
 	Button btnSignIn;
 
-	private static final int RC_SIGN_IN = 9001;
 	private FirebaseAuth.AuthStateListener listener;
-	private boolean onCreate = true;
 	private FirebaseAuth auth;
 
 	@AfterViews
@@ -98,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 				public void onComplete(@NonNull Task<AuthResult> task) {
 					if (task.isSuccessful()) {
 						UserManager.getInstance().setFirebaseUser(auth.getCurrentUser());
-						goToHome();
+						checkUserRole();
 					} else {
 						setLoading(false);
 						Common.getInstance().showAlertToast(LoginActivity.this, getString(R.string.sign_in_failed));
@@ -109,11 +108,14 @@ public class LoginActivity extends AppCompatActivity {
 
 	public void checkUserRole() {
 		String email = UserManager.getInstance().getUserEmail();
+		Log.e("email key", email);
 		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
 		ref.orderByChild(Constants.Canteen.ACCOUNT).equalTo(email).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
+				Log.e("email key", "MASUK SINI 1");
 				for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+					Log.e("email key", "MASUK SINI 2");
 					Canteen canteen = postSnapshot.getValue(Canteen.class);
 					canteen.setKey(postSnapshot.getKey());
 					UserManager.getInstance().setCanteen(canteen);

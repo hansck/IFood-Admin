@@ -15,7 +15,7 @@ public class Menu implements Parcelable {
 	private String canteenKey;
 	private String picture;
 
-	public Menu(){
+	public Menu() {
 
 	}
 
@@ -55,6 +55,14 @@ public class Menu implements Parcelable {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public String getCanteenKey() {
+		return canteenKey;
+	}
+
+	public void setCanteenKey(String canteenKey) {
+		this.canteenKey = canteenKey;
 	}
 
 	public String getPicture() {
