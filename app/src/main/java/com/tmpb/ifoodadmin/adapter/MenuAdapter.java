@@ -15,6 +15,8 @@ import com.tmpb.ifoodadmin.util.OnListItemSelected;
 
 import java.util.List;
 
+import static android.view.View.GONE;
+
 /**
  * Created by Hans CK on 13-Jan-17.
  */
@@ -26,7 +28,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 	private OnListItemSelected listener;
 
 	public class MenuViewHolder extends RecyclerView.ViewHolder {
-		public TextView name, price;
+		public TextView name, price, count;
 		public ImageView image;
 
 		public MenuViewHolder(View view) {
@@ -34,6 +36,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 			name = (TextView) view.findViewById(R.id.name);
 			price = (TextView) view.findViewById(R.id.price);
 			image = (ImageView) view.findViewById(R.id.image);
+			count = (TextView) view.findViewById(R.id.count);
 		}
 	}
 
@@ -61,6 +64,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 				listener.onClick(holder.getAdapterPosition());
 			}
 		});
+		holder.count.setVisibility(GONE);
 	}
 
 	@Override

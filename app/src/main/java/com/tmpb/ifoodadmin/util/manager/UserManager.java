@@ -1,10 +1,11 @@
-package com.tmpb.ifoodadmin.util;
+package com.tmpb.ifoodadmin.util.manager;
 
 import android.content.SharedPreferences;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tmpb.ifoodadmin.model.Canteen;
+import com.tmpb.ifoodadmin.util.Constants;
 
 /**
  * Created by Hans CK on 14-Feb-18.
@@ -56,16 +57,6 @@ public class UserManager {
 
 	public void setKeyStore(SharedPreferences preferences) {
 		this.keyStore = preferences;
-	}
-
-	public void setUserRole(boolean isAdmin) {
-		SharedPreferences.Editor editor = keyStore.edit();
-		if (isAdmin) {
-			editor.putString(Constants.User.ROLE, Constants.User.ADMIN);
-		} else {
-			editor.putString(Constants.User.ROLE, Constants.User.MEMBER);
-		}
-		editor.apply();
 	}
 
 	public void setCanteen(Canteen canteen) {

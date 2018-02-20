@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.util.ConnectivityUtil;
 import com.tmpb.ifoodadmin.util.Constants;
-import com.tmpb.ifoodadmin.util.UserManager;
+import com.tmpb.ifoodadmin.util.manager.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

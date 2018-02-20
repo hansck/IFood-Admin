@@ -13,16 +13,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
-import com.tmpb.ifoodadmin.activity.LoginActivity_;
-import com.tmpb.ifoodadmin.adapter.CanteenAdapter;
-import com.tmpb.ifoodadmin.model.Canteen;
+import com.tmpb.ifoodadmin.activity.DetailOrderActivity_;
+import com.tmpb.ifoodadmin.adapter.OrderHistoryAdapter;
+import com.tmpb.ifoodadmin.model.Order;
 import com.tmpb.ifoodadmin.util.Common;
 import com.tmpb.ifoodadmin.util.ConnectivityUtil;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.FirebaseDB;
 import com.tmpb.ifoodadmin.util.ItemDecoration;
 import com.tmpb.ifoodadmin.util.OnListItemSelected;
-import com.tmpb.ifoodadmin.util.manager.CanteenManager;
+import com.tmpb.ifoodadmin.util.manager.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
@@ -35,14 +35,14 @@ import java.util.List;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-@EFragment(R.layout.fragment_canteen)
-public class CanteenFragment extends BaseFragment {
+@EFragment(R.layout.fragment_order_history)
+public class OrderHistoryFragment extends BaseFragment {
 
-	private List<Canteen> canteens = new ArrayList<>();
-	private CanteenAdapter adapter;
+	private List<Order> orders = new ArrayList<>();
+	private OrderHistoryAdapter adapter;
 
 	@ViewById
-	RecyclerView listCanteen;
+	RecyclerView listOrder;
 	@ViewById
 	SwipeRefreshLayout swipeRefreshLayout;
 
@@ -50,13 +50,14 @@ public class CanteenFragment extends BaseFragment {
 	void initLayout() {
 		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.home));
 		((AppCompatActivity) getActivity()).getSupportActionBar().show();
-		RecyclerView.LayoutManager newsLayoutManager = new LinearLayoutManager(getActivity());
-		listCanteen.setLayoutManager(newsLayoutManager);
-		listCanteen.addItemDecoration(new ItemDecoration(1, Common.getInstance().dpToPx(getActivity(), 10), true));
-		listCanteen.setItemAnimator(new DefaultItemAnimator());
 
-		adapter = new CanteenAdapter(getActivity(), canteens, canteenListener);
-		listCanteen.setAdapter(adapter);
+		RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+		listOrder.setLayoutManager(layoutManager);
+		listOrder.addItemDecoration(new ItemDecoration(1, Common.getInstance().dpToPx(getActivity(), 10), true));
+		listOrder.setItemAnimator(new DefaultItemAnimator());
+
+		adapter = new OrderHistoryAdapter(getActivity(), orders, orderListener);
+		listOrder.setAdapter(adapter);
 
 		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
 			swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
@@ -90,29 +91,29 @@ public class CanteenFragment extends BaseFragment {
 	}
 
 	private void setCanteenList() {
-		if (listCanteen != null) {
-			if (canteens != null && canteens.size() > 0) {
+		if (listOrder != null) {
+			if (orders != null && orders.size() > 0) {
 				adapter.notifyDataSetChanged();
-				listCanteen.setVisibility(VISIBLE);
+				listOrder.setVisibility(VISIBLE);
 			} else {
-				listCanteen.setVisibility(GONE);
+				listOrder.setVisibility(GONE);
 			}
 		}
-		CanteenManager.getInstance().setCanteens(canteens);
 		cancelRefresh();
 	}
 
 	//region Firebase Call
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
-	void loadCanteen() {
-		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
+	void loadOrders() {
+		String email = UserManager.getInstance().getUserEmail();
+		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Order.ORDER);
 		ref.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
 				for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-					Canteen canteen = postSnapshot.getValue(Canteen.class);
-					canteen.setKey(postSnapshot.getKey());
-					canteens.add(canteen);
+					Order order = postSnapshot.getValue(Order.class);
+					order.setKey(postSnapshot.getKey());
+					orders.add(order);
 				}
 				setCanteenList();
 				ref.removeEventListener(this);
@@ -133,18 +134,20 @@ public class CanteenFragment extends BaseFragment {
 		@Override
 		public void onRefresh() {
 			swipeRefreshLayout.setRefreshing(true);
-			loadCanteen();
+			orders.clear();
+			loadOrders();
 		}
 	};
 
-	OnListItemSelected canteenListener = new OnListItemSelected() {
+	OnListItemSelected orderListener = new OnListItemSelected() {
 		@Override
 		public void onClick(int position) {
-			Intent intent = new Intent(getActivity(), LoginActivity_.class);
+			Intent intent = new Intent(getActivity(), DetailOrderActivity_.class);
 			Bundle bundle = new Bundle();
-			bundle.putParcelable(Constants.Canteen.CANTEEN, canteens.get(position));
+			bundle.putParcelable(Constants.Order.ORDER, orders.get(position));
 			intent.putExtras(bundle);
 			startActivity(intent);
+			getActivity().overridePendingTransition(R.anim.enter_right, R.anim.exit_left);
 		}
 	};
 	//endregion

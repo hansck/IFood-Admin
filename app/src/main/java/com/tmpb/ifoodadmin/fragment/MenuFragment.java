@@ -28,7 +28,7 @@ import com.tmpb.ifoodadmin.util.FirebaseDB;
 import com.tmpb.ifoodadmin.util.ImageUtil;
 import com.tmpb.ifoodadmin.util.ItemDecoration;
 import com.tmpb.ifoodadmin.util.OnListItemSelected;
-import com.tmpb.ifoodadmin.util.UserManager;
+import com.tmpb.ifoodadmin.util.manager.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;

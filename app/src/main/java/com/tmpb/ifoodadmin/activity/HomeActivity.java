@@ -19,17 +19,29 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.fragment.CanteenFragment_;
 import com.tmpb.ifoodadmin.fragment.ManageCanteenFragment_;
 import com.tmpb.ifoodadmin.fragment.ManageMenuFragment_;
 import com.tmpb.ifoodadmin.fragment.MenuFragment_;
-import com.tmpb.ifoodadmin.util.UserManager;
+import com.tmpb.ifoodadmin.fragment.OrderHistoryFragment_;
+import com.tmpb.ifoodadmin.model.Canteen;
+import com.tmpb.ifoodadmin.util.Constants;
+import com.tmpb.ifoodadmin.util.FirebaseDB;
+import com.tmpb.ifoodadmin.util.manager.CanteenManager;
+import com.tmpb.ifoodadmin.util.manager.UserManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @EActivity(R.layout.activity_home)
 @WindowFeature(Window.FEATURE_NO_TITLE)
@@ -85,6 +97,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 			}
 		});
 		setHeader();
+		loadCanteen();
 	}
 
 	public void setHomeChecked() {
@@ -142,6 +155,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.nav_history_order:
+				goToHistoryOrder();
 				break;
 			case R.id.nav_menu:
 				goToMenu();
@@ -171,11 +185,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 		navigateTo(fragment);
 	}
 
-//		private void goToHistoryOrder() {
-//		Intent intent = new Intent(this, VerificationActivity_.class);
-//		startActivity(intent);
-//		finish();
-//	}
+	private void goToHistoryOrder() {
+		OrderHistoryFragment_ fragment = new OrderHistoryFragment_();
+		navigateTo(fragment);
+	}
 
 	private void goToManageMenu() {
 		ManageMenuFragment_ fragment = new ManageMenuFragment_();
@@ -236,6 +249,31 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 			ft.addToBackStack(null);
 			ft.commit();
 		}
+	}
+	//endregion
+
+	//region Firebase Calls
+	void loadCanteen() {
+		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
+		ref.addValueEventListener(new ValueEventListener() {
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				List<Canteen> canteens = new ArrayList<>();
+				for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+					Canteen canteen = postSnapshot.getValue(Canteen.class);
+					canteen.setKey(postSnapshot.getKey());
+					canteens.add(canteen);
+				}
+				CanteenManager.getInstance().setCanteens(canteens);
+				goToHistoryOrder();
+				ref.removeEventListener(this);
+			}
+
+			@Override
+			public void onCancelled(DatabaseError error) {
+				ref.removeEventListener(this);
+			}
+		});
 	}
 	//endregion
 }

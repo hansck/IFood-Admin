@@ -11,6 +11,8 @@
 	<string name="deliver_to">Deliver To</string>
 	<string name="delivery_fee">Delivery Fee</string>
 	<string name="dialog_add">Are you sure you want to add this item?</string>
+	<string name="dialog_continue">Continue</string>
+	<string name="dialog_login">Please sign in to your Google Account to continue order.</string>
 	<string name="dialog_update">Are you sure you want to update this item?</string>
 	<string name="dialog_remove">Are you sure you want to remove this item?</string>
 	<string name="drawer_close">Close navigation drawer</string>
@@ -20,6 +22,7 @@
 	<string name="field_empty">All field must not be empty</string>
 	<string name="home">Home</string>
 	<string name="history_order">History Order</string>
+	<string name="in_progress">In Progress</string>
 	<string name="location">Location</string>
 	<string name="manage_canteen">Manage Canteen</string>
 	<string name="manage_menu">Manage Menu</string>
@@ -27,8 +30,8 @@
 	<string name="menu_name">Menu Name</string>
 	<string name="no">No</string>
 	<string name="notes">Notes</string>
-	<string name="on_progress">On Progress</string>
 	<string name="order">Order</string>
+	<string name="order_status">Order %1$s</string>
 	<string name="order_items">Order Items</string>
 	<string name="password">Password</string>
 	<string name="payment_details">Payment Details</string>
@@ -36,6 +39,7 @@
 	<string name="phone_number">Phone Number</string>
 	<string name="picture">Picture</string>
 	<string name="price">Price</string>
+	<string name="price_rp">Rp.%1$s</string>
 	<string name="receiver_name">Receiver Name</string>
 	<string name="remove">Remove</string>
 	<string name="schedule">Schedule</string>

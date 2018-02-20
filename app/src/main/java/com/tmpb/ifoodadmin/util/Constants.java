@@ -43,6 +43,12 @@ public class Constants {
 		public static String MENU = "menu";
 	}
 
+	public static class Order {
+		public static String KEY = "orderKey";
+		public static String ORDER = "order";
+		public static String ACCOUNT = "account";
+	}
+
 	public static class Storage {
 		public static String IMAGES = "images";
 	}
@@ -53,7 +59,7 @@ public class Constants {
 
 	public static class DateFormat {
 		public static final String DATETIME = "yyyyMMddHHmmss";
-		public static final String FULL_DATE = "EEEE, d MMMM yyyy";
+		public static final String FULL_DATE = "EEE, d MMM yyyy";
 		public static final String SHORT_DATE = "d/mm/yyyy";
 	}
 }
