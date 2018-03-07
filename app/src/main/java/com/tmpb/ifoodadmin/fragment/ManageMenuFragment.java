@@ -23,6 +23,7 @@ import com.google.firebase.storage.UploadTask;
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.model.Menu;
 import com.tmpb.ifoodadmin.util.Common;
+import com.tmpb.ifoodadmin.util.ConnectivityUtil;
 import com.tmpb.ifoodadmin.util.Constants;
 import com.tmpb.ifoodadmin.util.FirebaseDB;
 import com.tmpb.ifoodadmin.util.manager.UserManager;
@@ -61,6 +62,8 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 	@ViewById
 	Button btnUpdate;
 	@ViewById
+	Button btnRemove;
+	@ViewById
 	ProgressBar progressBar;
 
 	@AfterViews
@@ -73,7 +76,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		}
 		if (menu != null) {
 			editName.setText(menu.getName());
-			editPrice.setText(menu.getPrice());
+			editPrice.setText(String.valueOf(menu.getPrice()));
 			if (menu.getPicture() != null) {
 				int start = menu.getPicture().indexOf("F") + 1;
 				int end = menu.getPicture().indexOf("?");
@@ -81,6 +84,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 			}
 			btnAdd.setVisibility(GONE);
 			btnUpdate.setVisibility(VISIBLE);
+			btnRemove.setVisibility(VISIBLE);
 		}
 	}
 
@@ -100,8 +104,8 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		if (getData()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setMessage(getString(R.string.dialog_add))
-				.setPositiveButton(getString(R.string.yes), addNewsListener)
-				.setNegativeButton(getString(R.string.no), addNewsListener).show();
+				.setPositiveButton(getString(R.string.yes), addListener)
+				.setNegativeButton(getString(R.string.no), addListener).show();
 		} else {
 			Common.getInstance().showAlertToast(getActivity(), getString(R.string.field_empty));
 		}
@@ -112,10 +116,22 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		if (getData()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			builder.setMessage(getString(R.string.dialog_update))
-				.setPositiveButton(getString(R.string.yes), updateNewsListener)
-				.setNegativeButton(getString(R.string.no), updateNewsListener).show();
+				.setPositiveButton(getString(R.string.yes), updateListener)
+				.setNegativeButton(getString(R.string.no), updateListener).show();
 		} else {
 			Common.getInstance().showAlertToast(getActivity(), getString(R.string.field_empty));
+		}
+	}
+
+	@Click(R.id.btnRemove)
+	void onRemove() {
+		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setMessage(getString(R.string.dialog_remove))
+				.setPositiveButton(getString(R.string.yes), removeListener)
+				.setNegativeButton(getString(R.string.no), removeListener).show();
+		} else {
+			Common.getInstance().showAlertToast(getActivity(), getString(R.string.no_internet));
 		}
 	}
 
@@ -124,6 +140,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		progressBar.setVisibility(loading ? VISIBLE : GONE);
 		btnAdd.setVisibility(loading ? GONE : VISIBLE);
 		btnUpdate.setVisibility(loading ? GONE : VISIBLE);
+		btnRemove.setVisibility(loading ? GONE : VISIBLE);
 	}
 
 	@Override
@@ -209,7 +226,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 	//endregion
 
 	//region Listeners
-	DialogInterface.OnClickListener addNewsListener = new DialogInterface.OnClickListener() {
+	DialogInterface.OnClickListener addListener = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int choice) {
 			switch (choice) {
@@ -227,7 +244,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		}
 	};
 
-	DialogInterface.OnClickListener updateNewsListener = new DialogInterface.OnClickListener() {
+	DialogInterface.OnClickListener updateListener = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int choice) {
 			switch (choice) {
@@ -238,6 +255,24 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 					} else {
 						updateContent(null);
 					}
+					break;
+				case DialogInterface.BUTTON_NEGATIVE:
+					break;
+			}
+		}
+	};
+
+	DialogInterface.OnClickListener removeListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int choice) {
+			switch (choice) {
+				case DialogInterface.BUTTON_POSITIVE:
+					setLoading(true);
+					DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU);
+					ref.child(menu.getKey()).removeValue();
+					Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_remove));
+					setLoading(false);
+					getActivity().getSupportFragmentManager().popBackStack();
 					break;
 				case DialogInterface.BUTTON_NEGATIVE:
 					break;

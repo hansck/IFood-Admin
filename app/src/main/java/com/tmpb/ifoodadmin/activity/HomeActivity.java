@@ -97,7 +97,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 			}
 		});
 		setHeader();
-		loadCanteen();
+		if (!UserManager.getInstance().getCanteenKey().isEmpty()) {
+			loadCanteen();
+		} else {
+			goToCanteen();
+		}
 	}
 
 	public void setHomeChecked() {
@@ -210,10 +214,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.enter_left, R.anim.exit_right);
-	}
-
-	private void setLoading(boolean loading) {
-		progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
 	}
 
 	private void onSignOut() {

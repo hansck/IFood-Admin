@@ -46,6 +46,7 @@ import static android.view.View.VISIBLE;
 import static com.tmpb.ifoodadmin.model.OrderStatus.COMPLETED;
 import static com.tmpb.ifoodadmin.model.OrderStatus.IN_PROGRESS;
 import static com.tmpb.ifoodadmin.model.OrderStatus.OPEN;
+import static com.tmpb.ifoodadmin.model.OrderStatus.REJECTED;
 
 /**
  * Created by Hans CK on 19-Feb-18.
@@ -79,6 +80,8 @@ public class DetailOrderActivity extends AppCompatActivity {
 	@ViewById
 	Button btnInProgress;
 	@ViewById
+	Button btnRejected;
+	@ViewById
 	ProgressBar progressBar;
 	@ViewById
 	RelativeLayout statusContainer;
@@ -99,6 +102,11 @@ public class DetailOrderActivity extends AppCompatActivity {
 	@Click(R.id.btnInProgress)
 	void onInProgress() {
 		updateStatus(IN_PROGRESS);
+	}
+
+	@Click(R.id.btnRejected)
+	void onRejected() {
+		updateStatus(REJECTED);
 	}
 
 	@Click(R.id.btnCompleted)
@@ -160,6 +168,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 				color = ContextCompat.getColor(this, R.color.ic_in_progress);
 				break;
 			case CANCELLED:
+			case REJECTED:
 				color = ContextCompat.getColor(this, R.color.ic_cancel);
 				break;
 			case COMPLETED:
@@ -169,8 +178,11 @@ public class DetailOrderActivity extends AppCompatActivity {
 		statusContainer.setBackgroundColor(color);
 		if (orderStatus == OPEN) {
 			btnInProgress.setVisibility(VISIBLE);
+			btnRejected.setVisibility(VISIBLE);
 		} else if (orderStatus == IN_PROGRESS) {
 			btnCompleted.setVisibility(VISIBLE);
+			btnRejected.setVisibility(GONE);
+			btnInProgress.setVisibility(GONE);
 		} else {
 			buttonContainer.setVisibility(GONE);
 		}
@@ -180,6 +192,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 		progressBar.setVisibility(loading ? VISIBLE : GONE);
 		btnCompleted.setVisibility(loading ? GONE : VISIBLE);
 		btnInProgress.setVisibility(loading ? GONE : VISIBLE);
+		btnRejected.setVisibility(loading ? GONE : VISIBLE);
 	}
 
 	private void goToLogin() {

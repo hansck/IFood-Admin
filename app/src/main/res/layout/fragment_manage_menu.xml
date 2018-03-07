@@ -71,6 +71,12 @@
 			android:text="@string/update"
 			android:visibility="gone"/>
 
+		<Button
+			android:id="@+id/btnRemove"
+			style="@style/CustomButtonRemove"
+			android:text="@string/remove"
+			android:visibility="gone"/>
+
 		<ProgressBar
 			android:id="@+id/progressBar"
 			style="@style/ProgressBar"

@@ -1,15 +1,10 @@
 package com.tmpb.ifoodadmin.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +13,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
-import com.tmpb.ifoodadmin.activity.LoginActivity_;
 import com.tmpb.ifoodadmin.adapter.MenuAdapter;
 import com.tmpb.ifoodadmin.model.Menu;
 import com.tmpb.ifoodadmin.util.Common;
@@ -57,28 +51,10 @@ public class MenuFragment extends BaseFragment {
 	TextView location;
 	@ViewById
 	TextView schedule;
-	@ViewById
-	Toolbar toolbar;
-	@ViewById
-	AppBarLayout appBarLayout;
-	@ViewById
-	CollapsingToolbarLayout collapsingToolbar;
 
 	@AfterViews
 	void initLayout() {
-		((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-		appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-			@Override
-			public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-				if (verticalOffset <= toolbar.getHeight() - collapsingToolbar.getHeight()) {
-					collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-					collapsingToolbar.setTitle(UserManager.getInstance().getCanteenName());
-				} else {
-					collapsingToolbar.setContentScrimColor(ContextCompat.getColor(getActivity(), android.R.color.transparent));
-					collapsingToolbar.setTitle("");
-				}
-			}
-		});
+		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.menu));
 
 		setView();
 		RecyclerView.LayoutManager newsLayoutManager = new LinearLayoutManager(getActivity());
@@ -88,24 +64,14 @@ public class MenuFragment extends BaseFragment {
 
 		adapter = new MenuAdapter(getActivity(), menus, menuListener);
 		listMenu.setAdapter(adapter);
-
-		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
-			loadMenu();
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
 	}
 
 	@Override
 	public void onResume() {
+		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
+			loadMenu();
+		}
 		super.onResume();
-	}
-
-	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
-	void cancelRefresh() {
 	}
 
 	private void setView() {
@@ -124,12 +90,12 @@ public class MenuFragment extends BaseFragment {
 				listMenu.setVisibility(GONE);
 			}
 		}
-		cancelRefresh();
 	}
 
 	//region Firebase Call
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
 	void loadMenu() {
+		menus.clear();
 		String canteenKey = UserManager.getInstance().getCanteenKey();
 		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU);
 		ref.orderByChild(Constants.Menu.CANTEEN_KEY).equalTo(canteenKey).addValueEventListener(new ValueEventListener() {
@@ -147,7 +113,6 @@ public class MenuFragment extends BaseFragment {
 			@Override
 			public void onCancelled(DatabaseError error) {
 				if (isAdded()) Common.getInstance().showAlertToast(getActivity(), getString(R.string.default_failed));
-				cancelRefresh();
 				ref.removeEventListener(this);
 			}
 		});
@@ -158,11 +123,11 @@ public class MenuFragment extends BaseFragment {
 	OnListItemSelected menuListener = new OnListItemSelected() {
 		@Override
 		public void onClick(int position) {
-			Intent intent = new Intent(getActivity(), LoginActivity_.class);
+			ManageMenuFragment_ fragment = new ManageMenuFragment_();
 			Bundle bundle = new Bundle();
 			bundle.putParcelable(Constants.Menu.MENU, menus.get(position));
-			intent.putExtras(bundle);
-			startActivity(intent);
+			fragment.setArguments(bundle);
+			navigateFragment(R.id.contentFrame, fragment);
 		}
 	};
 	//endregion

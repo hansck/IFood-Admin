@@ -29,6 +29,7 @@
 	<string name="menu">Menu</string>
 	<string name="menu_name">Menu Name</string>
 	<string name="no">No</string>
+	<string name="no_internet">No Internet Connection. Please check your connection</string>
 	<string name="notes">Notes</string>
 	<string name="order">Order</string>
 	<string name="order_status">Order %1$s</string>
@@ -41,6 +42,7 @@
 	<string name="price">Price</string>
 	<string name="price_rp">Rp.%1$s</string>
 	<string name="receiver_name">Receiver Name</string>
+	<string name="rejected">Rejected</string>
 	<string name="remove">Remove</string>
 	<string name="schedule">Schedule</string>
 	<string name="sign_in">Sign In</string>

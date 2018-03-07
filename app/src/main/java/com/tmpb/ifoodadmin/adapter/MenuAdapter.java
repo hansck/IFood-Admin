@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.tmpb.ifoodadmin.R;
 import com.tmpb.ifoodadmin.model.Menu;
+import com.tmpb.ifoodadmin.util.Common;
 import com.tmpb.ifoodadmin.util.ImageUtil;
 import com.tmpb.ifoodadmin.util.OnListItemSelected;
 
@@ -30,6 +32,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 	public class MenuViewHolder extends RecyclerView.ViewHolder {
 		public TextView name, price, count;
 		public ImageView image;
+		public RelativeLayout container;
 
 		public MenuViewHolder(View view) {
 			super(view);
@@ -37,6 +40,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 			price = (TextView) view.findViewById(R.id.price);
 			image = (ImageView) view.findViewById(R.id.image);
 			count = (TextView) view.findViewById(R.id.count);
+			container = (RelativeLayout) view.findViewById(R.id.container);
 		}
 	}
 
@@ -56,9 +60,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 	public void onBindViewHolder(final MenuViewHolder holder, int position) {
 		Menu menu = list.get(position);
 		holder.name.setText(menu.getName());
-		holder.price.setText(String.valueOf(menu.getPrice()));
+		holder.price.setText(Common.getInstance().getFormattedPrice(context, menu.getPrice()));
 		ImageUtil.getInstance().setImageResource(context, menu.getPicture(), holder.image);
-		holder.image.setOnClickListener(new View.OnClickListener() {
+		holder.container.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				listener.onClick(holder.getAdapterPosition());

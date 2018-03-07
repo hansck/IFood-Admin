@@ -1,6 +1,5 @@
 package com.tmpb.ifoodadmin.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.tmpb.ifoodadmin.R;
-import com.tmpb.ifoodadmin.activity.LoginActivity_;
 import com.tmpb.ifoodadmin.adapter.CanteenAdapter;
 import com.tmpb.ifoodadmin.model.Canteen;
 import com.tmpb.ifoodadmin.util.Common;
@@ -48,8 +46,9 @@ public class CanteenFragment extends BaseFragment {
 
 	@AfterViews
 	void initLayout() {
-		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.home));
+		((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.canteen));
 		((AppCompatActivity) getActivity()).getSupportActionBar().show();
+
 		RecyclerView.LayoutManager newsLayoutManager = new LinearLayoutManager(getActivity());
 		listCanteen.setLayoutManager(newsLayoutManager);
 		listCanteen.addItemDecoration(new ItemDecoration(1, Common.getInstance().dpToPx(getActivity(), 10), true));
@@ -57,12 +56,6 @@ public class CanteenFragment extends BaseFragment {
 
 		adapter = new CanteenAdapter(getActivity(), canteens, canteenListener);
 		listCanteen.setAdapter(adapter);
-
-		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
-			swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
-			swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-			onRefreshListener.onRefresh();
-		}
 	}
 
 	@Override
@@ -78,8 +71,11 @@ public class CanteenFragment extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
-		swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+		if (ConnectivityUtil.getInstance().isNetworkConnected()) {
+			swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
+			swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+			onRefreshListener.onRefresh();
+		}
 	}
 
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
@@ -105,6 +101,7 @@ public class CanteenFragment extends BaseFragment {
 	//region Firebase Call
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
 	void loadCanteen() {
+		canteens.clear();
 		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
 		ref.addValueEventListener(new ValueEventListener() {
 			@Override
@@ -140,11 +137,11 @@ public class CanteenFragment extends BaseFragment {
 	OnListItemSelected canteenListener = new OnListItemSelected() {
 		@Override
 		public void onClick(int position) {
-			Intent intent = new Intent(getActivity(), LoginActivity_.class);
+			ManageCanteenFragment_ fragment = new ManageCanteenFragment_();
 			Bundle bundle = new Bundle();
 			bundle.putParcelable(Constants.Canteen.CANTEEN, canteens.get(position));
-			intent.putExtras(bundle);
-			startActivity(intent);
+			fragment.setArguments(bundle);
+			navigateFragment(R.id.contentFrame, fragment);
 		}
 	};
 	//endregion

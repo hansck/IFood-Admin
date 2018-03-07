@@ -41,13 +41,23 @@
 			android:visibility="gone"/>
 
 		<Button
+			android:id="@+id/btnRejected"
+			style="@style/CustomButtonRemove"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/btnInProgress"
+			android:layout_centerHorizontal="true"
+			android:text="@string/rejected"
+			android:visibility="gone"/>
+
+		<Button
 			android:id="@+id/btnCompleted"
 			style="@style/CustomButton"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_centerHorizontal="true"
 			android:text="@string/completed"
-			android:visibility="visible"/>
+			android:visibility="gone"/>
 
 		<ProgressBar
 			android:id="@+id/progressBar"
