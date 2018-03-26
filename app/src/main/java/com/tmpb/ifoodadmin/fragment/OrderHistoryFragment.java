@@ -30,6 +30,9 @@ import org.androidannotations.annotations.IgnoreWhen;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -86,7 +89,7 @@ public class OrderHistoryFragment extends BaseFragment {
 		}
 	}
 
-	private void setCanteenList() {
+	private void setOrderList() {
 		if (listOrder != null) {
 			if (orders != null && orders.size() > 0) {
 				adapter.notifyDataSetChanged();
@@ -98,29 +101,36 @@ public class OrderHistoryFragment extends BaseFragment {
 		cancelRefresh();
 	}
 
+	private void sortOrders() {
+		Collections.sort(orders, new Comparator<Order>() {
+			@Override
+			public int compare(Order o1, Order o2) {
+				return new Date(o2.getDate()).compareTo(new Date(o1.getDate()));
+			}
+		});
+	}
+
 	//region Firebase Call
 	@IgnoreWhen(IgnoreWhen.State.VIEW_DESTROYED)
 	void loadOrders() {
-		orders.clear();
-		String email = UserManager.getInstance().getUserEmail();
 		final DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Order.ORDER);
-		ref.addValueEventListener(new ValueEventListener() {
+		ref.orderByChild("canteenKey").equalTo(UserManager.getInstance().getCanteenKey()).addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
+				orders.clear();
 				for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 					Order order = postSnapshot.getValue(Order.class);
 					order.setKey(postSnapshot.getKey());
 					orders.add(order);
 				}
-				setCanteenList();
-				ref.removeEventListener(this);
+				sortOrders();
+				setOrderList();
 			}
 
 			@Override
 			public void onCancelled(DatabaseError error) {
 				if (isAdded()) Common.getInstance().showAlertToast(getActivity(), getString(R.string.default_failed));
 				cancelRefresh();
-				ref.removeEventListener(this);
 			}
 		});
 	}
