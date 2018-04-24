@@ -215,6 +215,7 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 		FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN).child(canteenKey).setValue(prepareCanteen(downloadUrl));
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_add));
+		Common.getInstance().hideSoftKeyboard(getActivity());
 		navigateFragmentWithoutBackstack(R.id.contentFrame, new CanteenFragment_());
 	}
 
@@ -229,6 +230,7 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 		ref.child(canteen.getKey()).updateChildren(taskMap);
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_update));
+		Common.getInstance().hideSoftKeyboard(getActivity());
 		getActivity().getSupportFragmentManager().popBackStack();
 	}
 	//endregion
@@ -279,6 +281,7 @@ public class ManageCanteenFragment extends ImageCaptureFragment {
 					DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Canteen.CANTEEN);
 					ref.child(canteen.getKey()).removeValue();
 					Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_remove));
+					Common.getInstance().hideSoftKeyboard(getActivity());
 					setLoading(false);
 					getActivity().getSupportFragmentManager().popBackStack();
 					break;

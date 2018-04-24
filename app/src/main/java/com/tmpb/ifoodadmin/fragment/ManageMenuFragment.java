@@ -209,6 +209,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU).child(menuKey).setValue(prepareMenu(downloadUrl));
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_add));
+		Common.getInstance().hideSoftKeyboard(getActivity());
 		navigateFragmentWithoutBackstack(R.id.contentFrame, new MenuFragment_());
 	}
 
@@ -221,6 +222,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 		ref.child(menu.getKey()).updateChildren(taskMap);
 		setLoading(false);
 		Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_update));
+		Common.getInstance().hideSoftKeyboard(getActivity());
 		getActivity().getSupportFragmentManager().popBackStack();
 	}
 	//endregion
@@ -271,6 +273,7 @@ public class ManageMenuFragment extends ImageCaptureFragment {
 					DatabaseReference ref = FirebaseDB.getInstance().getDbReference(Constants.Menu.MENU);
 					ref.child(menu.getKey()).removeValue();
 					Common.getInstance().showAlertToast(getActivity(), getString(R.string.success_remove));
+					Common.getInstance().hideSoftKeyboard(getActivity());
 					setLoading(false);
 					getActivity().getSupportFragmentManager().popBackStack();
 					break;
